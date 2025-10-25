@@ -12,7 +12,7 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o app main.go
+RUN go build -o executable main.go
 
 # running stage
 
@@ -21,6 +21,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=build /app/app .
+COPY --from=build /app/executable .
 
-CMD ["./app"]
+CMD ["./executable"]
