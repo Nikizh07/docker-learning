@@ -3,7 +3,7 @@
 Small Gin app showing how a multi‑stage Docker build produces a much smaller image than a single‑stage build.
 
 Files:
-- [multi-stage-build/Dockerfile](/Dockerfile) — multi‑stage build
+- [multi-stage-build/Dockerfile](Dockerfile) — multi‑stage build
 - [multi-stage-build/main.go](main.go) — Gin server on port 8080
 - [multi-stage-build/Dockerfil-sample-without-multistage](Dockerfil-sample-without-multistage) — naive single‑stage example (for size comparison)
 
