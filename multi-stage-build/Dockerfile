@@ -1,23 +1,18 @@
-FROM node:18-alpine AS build 
+# Use official Go image
+FROM golang:1.25-alpine
 
+# Set working directory
 WORKDIR /app
 
-COPY package*.json ./
+# Install git (needed if your Go modules use remote dependencies)
+RUN apk add --no-cache git
 
-RUN npm install
+# Copy module files first for caching (optional but faster rebuilds)
+COPY go.mod go.sum ./
+RUN go mod download
 
+# Copy the rest of your source code
 COPY . .
 
-RUN npm run build
-
-
-FROM gcr.io/distroless/nodejs18 AS runtime
-
-WORKDIR /app
-
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/node_modules ./node_modules
-
-COPY package*.json ./
-
-CMD ["node", "dist/server.js"]
+# Run your Go program
+CMD ["go", "run", "test.go"]
