@@ -1,0 +1,38 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: "mongo-db"
+    ports:
+      - 27017:27017 # external:internal port
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+
+    volumes:
+      - mongodb-data:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "myapp"
+    ports:
+      - 3000:3000
+    image: express-app
+    depends_on:
+      - mongodb
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb-data:
